@@ -1,0 +1,15 @@
+{
+  "name": "deepseek-backend",
+  "version": "1.0.0",
+  "description": "A Deepseek AI Clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node index.js"
+  },
+  "author": "Karunakar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
