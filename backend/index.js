@@ -6,6 +6,9 @@ dotenv.config();
 const app = express();
 const port =  4002;
 const MONGO_URI = process.env.MONGODB_URI
+
+//middleware(here we are using middleware to receive the json data comming from the body) 
+app.use(express.json());
 //Db connection Code goes here
 mongoose.connect(MONGO_URI).then(() =>{
     console.log("Connected to Mongodb")
