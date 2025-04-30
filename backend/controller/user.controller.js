@@ -27,10 +27,23 @@ export const signup = async(req,res) => {
     console.log(firstName,lastName,email,password);
 }
 
+//async and await is used when ever we are handling with dbs
 
-
-export const login = (req,res) => {
-    console.log("login  Function...")
+export const login =  async(req,res) => {
+   const {email, password}  = req.body;
+   try{
+    //validating the email,password
+    const user = await User.findOne({email:email})
+    //here we are trying to compare the password what we are getting is same as the password we are getting in the body
+    const isPasswordCorrect  = await  bcrypt.compare(password,user.password)
+    if(!user || !isPasswordCorrect){
+        return res.status(403).json({errors:"Invalid Credentials"});
+    }
+    return res.status(201).json({message:"User Logged in Successfully"});
+   }catch(error){
+    console.log("Error in login: ",error);
+    return res.status(500).json({errors:"Error in login"})
+   }
 }
 
 
