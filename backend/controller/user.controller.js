@@ -1,6 +1,11 @@
 import {User} from "../model/user.model.js";
-
+//for password hashing purpose
 import bcrypt from "bcryptjs";
+//for authorization purpose (generating jwt token)
+import jwt from 'jsonwebtoken';
+import config from "../config.js";
+
+
 export const signup = async(req,res) => {
     //by using Destructuring concept 
     const {firstName, lastName,email,password} = req.body;
@@ -20,6 +25,7 @@ export const signup = async(req,res) => {
             //this will save all our details in the db
            await newUser.save()
             return res.status(201).json({message:"User signup succeded"})
+
     }catch(error){
         console.log("Error in signup: ",error);
         return res.status(500).json({errors:"Error in signup"})
@@ -39,7 +45,15 @@ export const login =  async(req,res) => {
     if(!user || !isPasswordCorrect){
         return res.status(403).json({errors:"Invalid Credentials"});
     }
-    return res.status(201).json({message:"User Logged in Successfully"});
+    
+    //if the user is valid then am generating a valid user,here am passing the user id(am using id becuase to generate the token), this syntax is from the documentation ,2nd parameter is pasword ,1st is userid
+    const token = jwt.sign({id:user._id},config.JWT_USER_PASSWORD,{
+        //this means the password will be expired in 1day
+        expiresIn : "1d"
+    })
+    res.cookie("jwt",token,)
+          
+    return res.status(201).json({message:"User Logged in Successfully",user,token});
    }catch(error){
     console.log("Error in login: ",error);
     return res.status(500).json({errors:"Error in login"})
