@@ -51,7 +51,16 @@ export const login =  async(req,res) => {
         //this means the password will be expired in 1day
         expiresIn : "1d"
     })
-    res.cookie("jwt",token,)
+//with this we can see in postman that at what time the cookie is going to be expired 
+    const cookieOptions = {
+        //the token expires in one day
+        expires : new Date(Date.now() + 24*60*60*1000),
+        httpOnly: true,
+        secure:process.env.NODE_ENV === "production",
+        //it protects from cs arr attack
+        sameSite:"Strict"
+    }
+    res.cookie("jwt",token,cookieOptions)
           
     return res.status(201).json({message:"User Logged in Successfully",user,token});
    }catch(error){
@@ -62,5 +71,12 @@ export const login =  async(req,res) => {
 
 
 export const logout = (req,res) => {
-    console.log("logout  Function...")
+    try{
+        //clearing the cookie
+        res.clearCookie("jwt");
+        return res.status(200).json({message:"Logout Succed"})
+    }catch(error){
+        console.log("Error in login: ",error);
+        return res.status(500).json({errors:"Error in logout"});
+    }
 }

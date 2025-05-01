@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from 'dotenv'
-
+import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import userRoutes from  './routes/user.route.js'
 dotenv.config();
@@ -10,6 +10,8 @@ const MONGO_URI = process.env.MONGODB_URI
 
 //middleware(here we are using middleware to receive the json data comming from the body) 
 app.use(express.json());
+//this will be used as a middle ware for the frontend
+app.use(cookieParser());
 //Db connection Code goes here
 mongoose.connect(MONGO_URI).then(() =>{
     console.log("Connected to Mongodb")
