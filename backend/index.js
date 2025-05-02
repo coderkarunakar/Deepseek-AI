@@ -3,6 +3,8 @@ import dotenv from 'dotenv'
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import userRoutes from  './routes/user.route.js'
+import promptRoutes from  './routes/prompt.route.js'
+
 dotenv.config();
 const app = express();
 const port =  4002;
@@ -22,6 +24,8 @@ mongoose.connect(MONGO_URI).then(() =>{
 
 //routes
 app.use("/api/v1/user",userRoutes);
+app.use("/api/v1/deepseekai",promptRoutes);
+
 app.listen(port, ()=>{
     console.log(` app is listening on port ${port}`);
 });
