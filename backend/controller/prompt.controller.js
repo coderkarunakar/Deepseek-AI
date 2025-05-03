@@ -6,9 +6,11 @@ const openai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
   defaultHeaders: {
     "HTTP-Referer": "http://localhost:4002", // or your actual domain
-    "X-Title": "deepseekAI" // optional, name of your app
+    "X-Title": "deepseekAI", // optional, name of your app
+    "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`  // Add Authorization header explicitly
   }
 });
+
 console.log("🔑 OpenRouter Key:", process.env.OPENROUTER_API_KEY);
 
 export const sendPrompt = async (req, res) => {
