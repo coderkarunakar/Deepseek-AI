@@ -1,9 +1,16 @@
+import Prompt from "../model/prompt.model.js";
+
 import OpenAI from "openai";
 const openai = new OpenAI({
-  baseURL: 'https://api.deepseek.com',
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENROUTER_API_KEY,
+  baseURL: "https://openrouter.ai/api/v1",
+  defaultHeaders: {
+    "HTTP-Referer": "http://localhost:4002", // or your actual domain
+    "X-Title": "deepseekAI" // optional, name of your app
+  }
 });
-console.log(openai.apiKey)
+console.log("🔑 OpenRouter Key:", process.env.OPENROUTER_API_KEY);
+
 export const sendPrompt = async (req, res) => {
    //just getting the content what ever the user types in the body
    const {content } = req.body
@@ -24,7 +31,7 @@ export const sendPrompt = async (req, res) => {
       //took this code from deepseek api doc
       const completion = await openai.chat.completions.create({
         messages: [{ role: "user", content: content}],
-        model: "deepseek-chat",
+        model: "mistralai/mistral-7b-instruct", // Free model
       });
       //the ai assistant ans we will get in below line of code
       const aiContent = completion.choices[0].message.content
@@ -35,9 +42,10 @@ export const sendPrompt = async (req, res) => {
         content:aiContent
       })
       return res.status(200).json({reply:aiContent})
-   }catch(error){
-      console.log("Error in prompt:",error)
-      return res.status(500).json({error:"Something went wrong with the Ai response"})
-   }
+   } catch (error) {
+    console.error("❌ AI Error:", error?.response?.data || error.message || error);
+    return res.status(500).json({ error: "Something went wrong with the Ai response" });
+  }
+  
   };
   

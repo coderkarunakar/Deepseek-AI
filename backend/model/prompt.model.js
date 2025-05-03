@@ -16,4 +16,6 @@ const  promptSchema = new mongoose.Schema({
    }
 })
 
-export const  Prompt = mongoose.model("User",promptSchema)
+const Prompt = mongoose.model("Prompt", promptSchema); // Correct model name
+
+export default Prompt;  // Use default export
