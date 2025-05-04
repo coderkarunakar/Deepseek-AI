@@ -5,7 +5,7 @@ const router = express.Router()
 //defining the router
 
 console.log("✅ Prompt endpoint hit!");
-router.post("/prompt",sendPrompt);
+router.post("/prompt",userMiddleware,sendPrompt);
 
 
 export default router;

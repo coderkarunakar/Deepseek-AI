@@ -1,5 +1,13 @@
 import mongoose  from "mongoose";
 const  promptSchema = new mongoose.Schema({
+   //storing our userid in db
+   userId :{
+      //our id is OjbctId in our db go and see at users db
+      type : mongoose.Schema.Types.ObjectId,
+      //in our reference we are adding user model
+      ref : "User",
+      required : true
+   },
    role:{
     type: String,
     enum:["user","assistant"],

@@ -16,6 +16,7 @@ console.log("🔑 OpenRouter Key:", process.env.OPENROUTER_API_KEY);
 export const sendPrompt = async (req, res) => {
    //just getting the content what ever the user types in the body
    const {content } = req.body
+   const userId = req.userId;
 
    //if the user didn't type the content in the body or if it is empty and hit enter then 
    if(!content || content.trim() === ""){
@@ -26,6 +27,8 @@ export const sendPrompt = async (req, res) => {
     //save user prompt what ever user enter inside prompt in db
     //with the help of create method we will post the data to database
       const userPrompt = await Prompt.create({
+        userId,
+        //since the prompt was given by the user
         role:"user",
         content
       })
@@ -40,7 +43,9 @@ export const sendPrompt = async (req, res) => {
 
       //save assistant prompt in Db
       const aiMessage = await Prompt.create({
-        role:"user",
+        userId,
+        //the prompt is giving by the assistant
+        role:"assistant",
         content:aiContent
       })
       return res.status(200).json({reply:aiContent})
