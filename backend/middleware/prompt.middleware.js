@@ -10,7 +10,8 @@ function userMiddleware(req,res,next){
         return res.status(401).json({errors:"No token provided"});
     }
     //in the header token at index 0 i have a Bearer and at index 1 i have token value
-    const token = authHeader.split("")[1]
+    //to keep a space after bearer and the token here i had used space it should split based on space
+    const token = authHeader.split(" ")[1]
     try{
         const decoded = jwt.verify(token,config.JWT_USER_PASSWORD)
         console.log("decodedvalue",decoded);
