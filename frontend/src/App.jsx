@@ -1,7 +1,6 @@
+import {Home} from "./components/Home"
 export default function App() {
   return (
-    <h1 className="bg-red-500">
-      Hello world!
-    </h1>
+   <div><Home/></div>
   )
 }
